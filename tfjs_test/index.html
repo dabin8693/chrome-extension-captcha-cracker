@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script src="tfjs4.17.0.js"></script>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+<a>start</a>
+<textarea type="text" id="text1"></textarea>
+
+<canvas id="myCanvas" width="160" height="60"></canvas>
+<script>
+    let img = document.getElementById("myCanvas");
+    console.log(img)
+    const IMG = new Image();
+    IMG.setAttribute("crossOrigin", "");
+    IMG.src = '0030.jpg'
+    //IMG.crossOrigin = "Anonymous";
+
+    IMG.addEventListener('load', async function () {
+        console.log('높이 : ', this.naturalHeight, '너비 : ', this.naturalWidth, "이미지 : ", this.src);
+        let ctx = document.getElementById('myCanvas').getContext("2d");
+        ctx.drawImage(IMG, 0, 0, 160, 60)
+        console.log(document.getElementById("myCanvas"))
+
+        const finalImage = await startModel(IMG);
+
+        //const model = await tf.loadLayersModel('capcha_cracker_web_final/model.json');
+        const model = await tf.loadGraphModel('capcha_cracker_web_final/model.json');
+        //model.predict(finalImage);
+        model.executeAsync(finalImage).then((prediction) => {
+            const value = prediction.dataSync()
+            console.log("결과:",value);
+            const captcha_number = ctc_greedy_decoder(value);
+            document.getElementById("text1").value = captcha_number
+        });
+
+    });
+
+    let input = document.getElementById("text1");
+
+    function startModel(IMG) {
+        //tf.image.rgbToGrayscale
+        let image = tf.browser.fromPixels(document.getElementById("myCanvas"), 1);
+        image = tf.image.resizeBilinear(image, [50, 200]).div(tf.scalar(255)).toFloat();
+        //255로 나눠 [0, 1] 정규화
+        image = tf.transpose(image, perm = [1, 0, 2]);
+        image = tf.expandDims(image, axis=0);
+        //1,200,50,1
+        return image;
+    }
+
+    function ctc_greedy_decoder(value){
+        //console.log("리스트1:",value[121])
+        let index = 0;
+        let list = [];
+        let maxnumindex = 0;
+        let maxnum = 0;
+        for(const element of value) {
+            //console.log("리스트2:",element)
+            if (index == 0) {
+                maxnum = element
+                maxnumindex = 0
+            }
+            if (maxnum<element) {
+                maxnum = element
+                maxnumindex = index
+            }
+            if (index==10) {
+                //console.log("리스트element:", element)
+                //console.log("리스트index:", maxnumindex)
+                list.push(maxnumindex)
+                index = 0;
+                maxnumindex = 0;
+            }
+            else
+            {
+                index++
+            }
+        }
+
+        let list2 = [];
+        let strNum = "";
+        let captch_num = "";
+        for (let i = 0; i<49; i++) {
+            if (list[i] != list[i + 1]) {
+                list2.push(list[i])
+            }
+        }
+        list2.push(list[list.length-1])
+        strNum = list2.join('')
+        captch_num = strNum.replaceAll(10, '');
+        return captch_num
+    }
+
+
+</script>
+</body>
+</html>
