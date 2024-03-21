@@ -35,9 +35,9 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["capcha_cracker_web_final/model.json","capcha_cracker_web_final/group1-shard1of1.bin"],
+      "resources": ["captcha_cracker_web_final/model.json","captcha_cracker_web_final/group1-shard1of1.bin"],
         "matches": ["<all_urls>"],
-        "extension_ids": ["fkdljidpnacgjgbbjfenmmkepobkmgdj"]
+        "extension_ids": ["mchcbjjljbnddeabcnkhdlpppgfhgobk"]
           }
   ]
 

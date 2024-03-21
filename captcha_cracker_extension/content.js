@@ -15,14 +15,14 @@ function capcha_processing(captcha_img_src) {
     IMG.src = captcha_img_src;
     IMG.addEventListener('load', async function () {
         const finalImage = await image_preprocessing(IMG);
-        const model = await tf.loadGraphModel('chrome-extension://fkdljidpnacgjgbbjfenmmkepobkmgdj/captcha_cracker_web_final/model.json');
+        const model = await tf.loadGraphModel('chrome-extension://mchcbjjljbnddeabcnkhdlpppgfhgobk/captcha_cracker_web_final/model.json');
         model.executeAsync(finalImage).then((prediction) => {
             const value = prediction.dataSync()
             const captcha_number = ctc_greedy_decoder(value);
 
             document.getElementById("captcha_key").value = captcha_number
             document.getElementsByName("fcaptcha")[0].submit()
-            });
+        });
     });
 
 }
