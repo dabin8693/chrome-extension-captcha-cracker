@@ -1,10 +1,17 @@
 
 
 window.addEventListener("load", function() {
-    capcha_processing(document.getElementsByClassName("captcha_img")[0].src);
+    const url = window.location.hostname;
+    const filePath = window.location.pathname;
 
+    //bbs/captcha
+    if ((url.indexOf("newtoki") != -1 )|| (url.indexOf("manatoki") != -1 )|| (url.indexOf("booktoki") != -1 )) {
+        if(filePath.indexOf("bbs/captcha") != -1) {
+            capcha_processing(document.getElementsByClassName("captcha_img")[0].src);
+
+        }
+    }
 });
-
 
 
 
