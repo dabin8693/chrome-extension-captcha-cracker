@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["content.js"]
+      "js": ["content.js","tfjs4.17.0.js"]
     }
   ],
   "permissions": [
