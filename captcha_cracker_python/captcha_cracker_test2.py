@@ -61,8 +61,6 @@ if __name__ == '__main__':
     prediction_model.save("capcha_cracker_final", save_format='tf')
 
     def ctc_decode(y_pred, input_length, greedy=True, beam_width=100, top_paths=1):
-        # ctc_decode 자체 제작 버그 있을 수 있음
-        # https://github1s.com/tensorflow/tensorflow/blob/master/tensorflow/core/util/ctc/ctc_decoder.h 참조
         input_shape = tf.shape(y_pred)
         num_samples, num_steps = input_shape[0], input_shape[1]
         y_pred = tf.math.log(tf.transpose(y_pred, perm=[1, 0, 2]) + keras.backend.epsilon())
