@@ -20,7 +20,9 @@ function capcha_processing(captcha_img_src) {
     IMG.src = captcha_img_src;
     IMG.addEventListener('load', async function () {
         const finalImage = await image_preprocessing(IMG);
-        const model = await tf.loadGraphModel('chrome-extension://mchcbjjljbnddeabcnkhdlpppgfhgobk/captcha_cracker_web_final/model.json');
+        appID = chrome.runtime.id
+        const model = await tf.loadGraphModel('chrome-extension://' + appID + '/captcha_cracker_web_final/model.json');
+        //const model = await tf.loadGraphModel('chrome-extension://mchcbjjljbnddeabcnkhdlpppgfhgobk/captcha_cracker_web_final/model.json');
         model.executeAsync(finalImage).then((prediction) => {
             const value = prediction.dataSync()
             const captcha_number = ctc_greedy_decoder(value);
