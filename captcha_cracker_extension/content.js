@@ -5,8 +5,9 @@ window.addEventListener("load", function() {
     //bbs/captcha
     if ((url.indexOf("newtoki") != -1 )|| (url.indexOf("manatoki") != -1 )|| (url.indexOf("booktoki") != -1 )) {
         if(filePath.indexOf("bbs/captcha") != -1) {
-            capcha_processing(document.getElementsByClassName("captcha_img")[0].src);
-
+            tf.setBackend('cpu').then(() => {
+                capcha_processing(document.getElementsByClassName("captcha_img")[0].src);
+            });
         }
     }
 });
