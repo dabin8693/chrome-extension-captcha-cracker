@@ -15,3 +15,11 @@ tensorflowjs_converter \
     /home/lee/.venv/bin/capcha_cracker_final \
     /home/lee/.venv/bin/capcha_cracker_web_final2
 
+tensorflowjs_converter \
+    --input_format=tf_frozen_model \
+    --output_node_names='model/dense2/Softmax' \
+    --output_format=tfjs_graph_model \
+    --strip_debug_ops=True \
+    frozen_graph.pb \
+    /home/lee/frozen_graph_m
+
