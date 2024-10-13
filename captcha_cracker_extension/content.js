@@ -1,8 +1,6 @@
 window.addEventListener("load", function() {
     const url = window.location.hostname;
     const filePath = window.location.pathname;
-
-    //bbs/captcha
     if ((url.indexOf("newtoki") != -1 )|| (url.indexOf("manatoki") != -1 )|| (url.indexOf("booktoki") != -1 )) {
         if(filePath.indexOf("bbs/captcha") != -1) {
             tf.setBackend('cpu').then(() => {
@@ -10,8 +8,8 @@ window.addEventListener("load", function() {
             });
         }
     }
+    
 });
-
 
 
 
@@ -22,15 +20,19 @@ function capcha_processing(captcha_img_src) {
     IMG.addEventListener('load', async function () {
         const finalImage = await image_preprocessing(IMG);
         appID = chrome.runtime.id
-        const model = await tf.loadGraphModel('chrome-extension://' + appID + '/captcha_cracker_web_final/model.json');
-        //const model = await tf.loadGraphModel('chrome-extension://mchcbjjljbnddeabcnkhdlpppgfhgobk/captcha_cracker_web_final/model.json');
+        // 프리징, 디버깅옵션 제거 모델
+        const model = await tf.loadGraphModel('chrome-extension://' + appID + '/frozen_graph_m/model.json');
+        //const model2 = await tf.loadGraphModel('chrome-extension://' + appID + '/captcha_cracker_web_final/model.json');
+
+        //console.time('Model predict Time');  // 타이머 시작
         model.executeAsync(finalImage).then((prediction) => {
             const value = prediction.dataSync()
+            //console.timeEnd('Model predict Time');  // 타이머 종료
             const captcha_number = ctc_greedy_decoder(value);
-
             document.getElementById("captcha_key").value = captcha_number
             document.getElementsByName("fcaptcha")[0].submit()
         });
+
     });
 
 }
@@ -40,21 +42,17 @@ function capcha_processing(captcha_img_src) {
 function image_preprocessing(IMG) {
     let image = tf.browser.fromPixels(IMG, 1);
     image = tf.image.resizeBilinear(image, [50, 200]).div(tf.scalar(255)).toFloat();
-    //255로 나눠 [0, 1] 정규화
     image = tf.transpose(image, perm = [1, 0, 2]);
     image = tf.expandDims(image, axis = 0);
-    //1,200,50,1
     return image;
 }
 
 function ctc_greedy_decoder(value){
-    //console.log("리스트1:",value[121])
     let index = 0;
     let list = [];
     let maxnumindex = 0;
     let maxnum = 0;
     for(const element of value) {
-        //console.log("리스트2:",element)
         if (index == 0) {
             maxnum = element
             maxnumindex = 0
