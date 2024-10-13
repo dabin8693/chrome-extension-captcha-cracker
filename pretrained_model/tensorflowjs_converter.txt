@@ -8,7 +8,6 @@ wsl 저장소 파일탐색기로 찾아가기
 주소
 https://github.com/tensorflow/tfjs/blob/master/tfjs-converter/README.md
 
-1. output 포맷 설정 default 예:     <- 이걸로 해야됨 model.predict 안됨, model.executeasync 사용가능
 tensorflowjs_converter \
     --input_format=tf_saved_model \
     --signature_name=serving_default \
@@ -16,29 +15,3 @@ tensorflowjs_converter \
     /home/lee/.venv/bin/capcha_cracker_final \
     /home/lee/.venv/bin/capcha_cracker_web_final2
 
-2. TensorFlow Saved Model 예:    <--- 컨버전은 되는데 model.predict, model.executeasync안됨
-tensorflowjs_converter \
-    --input_format=tf_saved_model \
-    --output_format=tfjs_graph_model \
-    --signature_name=serving_default \
-    --saved_model_tags=serve \
-    /home/lee/.venv/bin/capcha_cracker_model_j2 \
-    /home/lee/.venv/bin/capcha_cracker_web_model2
-
-3. tf.keras SavedModel 예:    <--- 컨버전 안됨
-tensorflowjs_converter \
-    --input_format=keras_saved_model \
-    /home/lee/.venv/bin/capcha_cracker_model_j2 \
-    /home/lee/.venv/bin/capcha_cracker_web_model2
-
-4. Keras HDF5 모델 예:    <--- 컨버전 안됨
-tensorflowjs_converter \
-    --input_format=keras \
-    /home/lee/.venv/bin/capcha_cracker_model.h5 \
-    /home/lee/.venv/bin/capcha_cracker_web_h5
-
-
-
-
-
---output_format=tfjs_layers_model \
