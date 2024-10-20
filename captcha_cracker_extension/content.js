@@ -19,9 +19,8 @@ function capcha_processing(captcha_img_src) {
     IMG.src = captcha_img_src;
     IMG.addEventListener('load', async function () {
         const finalImage = await image_preprocessing(IMG);
-        appID = chrome.runtime.id
-        // 프리징, 디버깅옵션 제거 모델
-        const model = await tf.loadGraphModel('chrome-extension://' + appID + '/frozen_graph_m/model.json');
+        modelURL = browser.runtime.getURL('/frozen_graph_m/model.json')
+        const model = await tf.loadGraphModel(modelURL);
         //const model2 = await tf.loadGraphModel('chrome-extension://' + appID + '/captcha_cracker_web_final/model.json');
 
         //console.time('Model predict Time');  // 타이머 시작
