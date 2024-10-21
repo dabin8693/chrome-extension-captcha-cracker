@@ -1,0 +1,2 @@
+파이어폭스 사용시 manifest파일의 content_scripts js부분에 tfjs4.17.0.js대신 tfjs4.17.0_feat.firefox.js사용
+파이어폭스 사용시 manifest파일의 "content_security_policy" "extension_pages" script-src에 unsafe-eval추가
