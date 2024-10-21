@@ -19,8 +19,9 @@ function capcha_processing(captcha_img_src) {
     IMG.src = captcha_img_src;
     IMG.addEventListener('load', async function () {
         const finalImage = await image_preprocessing(IMG);
+        const browser = window.browser || window.chrome;
+        // 전자 파이어폭스 후자 크롬
         modelURL = browser.runtime.getURL('/frozen_graph_m/model.json')
-        // 파이어폭스 사용시 manifest파일의 content_scripts js부분에 tfjs4.17.0.js대신 tfjs4.17.0_feat.firefox.js사용
         const model = await tf.loadGraphModel(modelURL);
         //const model2 = await tf.loadGraphModel('chrome-extension://' + appID + '/captcha_cracker_web_final/model.json');
 
