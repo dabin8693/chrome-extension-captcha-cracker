@@ -32,6 +32,7 @@
         //document.cookie = cookieName + "=" + cookieValue + expires + "; path=/";
         // 기존 PHPSESSID 쿠키 삭제
         // 브라우저마다 쿠키 설정방법이 다를 수 있음
+        // 쿠키 설정이 애드가드 유저스크립트로 동작시 작동안하는 버그가 있음음
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`;
         // 새로운 PHPSESSID 쿠키 설정
         document.cookie = `${cookieName}=${cookieValue}${expires}; path=/; SameSite=None; Secure`;
